@@ -1,6 +1,6 @@
 import { getLenguages, getLabels, addLenguage, updLenguage, delLenguage } from '../models/lenguage-model.js';
 
-export const getLenguageAll = async (req, res) => {//Uso de ES(EcmaScrip) MoDules
+export const getLenguageAlls = async (req, res) => {//Uso de ES(EcmaScrip) MoDules
     const lenguages = await getLenguages();
     // const labels = await getLabels();
 
@@ -10,7 +10,7 @@ export const getLenguageAll = async (req, res) => {//Uso de ES(EcmaScrip) MoDule
     res.status(200).json(lenguages);
 }
 
-export const addLenguage = async (req, res) => {
+export const addLenguages = async (req, res) => {
     try {
         const response = await addLenguage(req.body);
         if (!response) return res.status(400).json({ message: "No pudo ser procesada la solicitud, comuniquese con el administrador" })
@@ -20,7 +20,7 @@ export const addLenguage = async (req, res) => {
     }
 }
 
-export const updLenguage = async (req, res) => {
+export const updLenguages = async (req, res) => {
     try {
         const response = await updLenguage(req.body);
         if (!response) return res.status(400).json({ message: "No pudo ser procesada la solicitud, comuniquese con el administrador" })
@@ -30,7 +30,7 @@ export const updLenguage = async (req, res) => {
     }
 }
 
-export const delLenguage = async (req, res) => {
+export const delLenguages = async (req, res) => {
     try {
         const response = await delLenguage(req.body);
         if (!response) return res.status(400).json({ message: "No pudo ser procesada la solicitud, comuniquese con el administrador" })
