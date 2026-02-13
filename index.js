@@ -13,7 +13,7 @@ export const app = express();
 //Middlewares
 app.use(express.json());
 app.use(cors());
-app.use(corsMiddleware())
+// app.use(corsMiddleware())
 
 //Routes
 app.use('/lenguage', LenguageRouter);

@@ -9,13 +9,16 @@ const ACCEPTED_ORIGINS = [
 export const corsMiddleware = ({ aceptedOrigins = ACCEPTED_ORIGINS } = {}) => cors({
     origin: (origin, calback) => {
 
-        if (aceptedOrigins.includes(origin)) {
-            return calback(null, true);
-        }
-
         if (!origin) {
             return calback(null, true);
         }
-        return calback(new Error("origen desconocido"))
-    }
+
+        if (aceptedOrigins.includes(origin)) {
+            return calback(null, true);
+        } else {
+            calback(new Error("Origen no permitido por CORS"));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 })
