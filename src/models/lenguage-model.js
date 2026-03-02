@@ -5,13 +5,18 @@ const dbConfig = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+    database: process.env.DB_DATABASE,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 10000,
 }
 
-const connection = await mysql.createConnection(dbConfig);
+const pool = await mysql.createPool(dbConfig);
 
 export const getLenguages = async () => {
-    const [rows] = await connection.query(
+    const [rows] = await pool.query(
         `SELECT l.lenguaje_id, c.nombre AS categoria, l.categoria_id, l.nombre, l.descripcion, l.tiempo 
             FROM lenguajes l
             INNER JOIN categoria AS c ON l.categoria_id = c.categoria_id
@@ -25,7 +30,7 @@ export const addLenguage = async (data) => {
     try {
         let lenguaje_id = 0;
         const msgError = "";
-        const [result] = await connection.query(
+        const [result] = await pool.query(
             `INSERT INTO lenguajes(categoria_id, nombre, descripcion, tiempo, estatus, created_at)
                     VALUES(?, ?, ?, ?, 1, NOW())`,
             [data.categoria_id, data.nombre, data.descripcion, data.tiempo],
@@ -45,7 +50,7 @@ export const addLenguage = async (data) => {
 
 export const updLenguage = async (data) => {
     try {
-        const [result] = await connection.query(
+        const [result] = await pool.query(
             `UPDATE lenguajes SET
                 categoria_id = ?,
                 nombre = ?,
@@ -63,7 +68,7 @@ export const updLenguage = async (data) => {
 
 export const delLenguage = async (data) => {
     try {
-        const [result] = await connection.query(
+        const [result] = await pool.query(
             `UPDATE lenguajes SET
                 estatus = 0,
                 updated_at = NOW()
@@ -78,7 +83,7 @@ export const delLenguage = async (data) => {
 }
 
 export const getLabels = async () => {
-    const [etiquetas] = await connection.query(
+    const [etiquetas] = await pool.query(
         `SELECT etiqueta_id, nombre, estatus FROM etiquetas;`
     );
     return etiquetas;
